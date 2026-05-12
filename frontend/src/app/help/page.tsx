@@ -12,7 +12,7 @@ export default function HelpPage() {
         
         <header className="mb-10">
           <h1 className="font-headline-lg text-headline-lg text-[#1b1c1a] mb-3">Help & Support</h1>
-          <p className="font-body-lg text-body-lg text-on-surface-variant">Find answers to common questions and learn how to get the most out of Serene AI.</p>
+          <p className="font-body-lg text-body-lg text-on-surface-variant">Find answers to common questions and learn how to get the most out of Atlas.</p>
         </header>
 
         <div className="space-y-8">
@@ -26,7 +26,7 @@ export default function HelpPage() {
               </div>
               <div>
                 <h3 className="font-label-md text-label-md text-on-surface mb-2">Are my conversations private?</h3>
-                <p className="font-body-md text-body-md text-on-surface-variant leading-relaxed">Yes, Serene AI prioritizes your privacy. All conversations are encrypted and are never used to train external public models without your explicit consent.</p>
+                <p className="font-body-md text-body-md text-on-surface-variant leading-relaxed">Yes, Atlas prioritizes your privacy. All conversations are encrypted and are never used to train external public models without your explicit consent.</p>
               </div>
               <div>
                 <h3 className="font-label-md text-label-md text-on-surface mb-2">How do I generate an image?</h3>

@@ -8,9 +8,9 @@ export default function Login() {
     <div className="bg-tertiary font-body-md text-on-surface antialiased min-h-screen py-4 px-4 relative flex items-center justify-center">
       {/* Cinematic Landscape Background */}
       <div className="absolute inset-0 z-0 overflow-hidden">
-        <Image 
-          alt="Cinematic mountain landscape" 
-          className="w-full h-full object-cover opacity-80" 
+        <Image
+          alt="Cinematic mountain landscape"
+          className="w-full h-full object-cover opacity-80"
           src="/bg-landscape.png?v=2"
           fill
           priority
@@ -18,7 +18,7 @@ export default function Login() {
           quality={100}
           unoptimized
         />
-        {/* Overlay to ensure text readability and maintain serene aesthetic */}
+        {/* Overlay to ensure text readability and maintain Atlas aesthetic */}
         <div className="absolute inset-0 bg-tertiary-fixed/30 mix-blend-multiply"></div>
         <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/40 to-transparent"></div>
       </div>
@@ -29,7 +29,7 @@ export default function Login() {
           {/* Header */}
           <div className="text-center space-y-1">
             <h1 className="font-headline-sm text-headline-sm text-primary">Welcome Back</h1>
-            <p className="font-body-md text-sm text-on-surface-variant">Continue your journey with Serene AI.</p>
+            <p className="font-body-md text-sm text-on-surface-variant">Continue your journey with Atlas.</p>
           </div>
 
           {/* OAuth Buttons */}
@@ -59,13 +59,13 @@ export default function Login() {
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                   <span className="material-symbols-outlined text-on-surface-variant text-[20px]" data-icon="mail">mail</span>
                 </div>
-                <input 
-                  autoComplete="email" 
-                  className="block w-full pl-10 pr-3 py-2 bg-white/40 border border-white/30 rounded-lg text-[15px] text-on-surface placeholder:text-on-surface-variant/70 focus:ring-2 focus:ring-primary-container focus:border-transparent transition-all shadow-inner outline-none" 
-                  id="email" 
-                  name="email" 
-                  placeholder="Email address" 
-                  required 
+                <input
+                  autoComplete="email"
+                  className="block w-full pl-10 pr-3 py-2 bg-white/40 border border-white/30 rounded-lg text-[15px] text-on-surface placeholder:text-on-surface-variant/70 focus:ring-2 focus:ring-primary-container focus:border-transparent transition-all shadow-inner outline-none"
+                  id="email"
+                  name="email"
+                  placeholder="Email address"
+                  required
                   type="email"
                 />
               </div>
@@ -76,13 +76,13 @@ export default function Login() {
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                   <span className="material-symbols-outlined text-on-surface-variant text-[20px]" data-icon="lock">lock</span>
                 </div>
-                <input 
-                  autoComplete="current-password" 
-                  className="block w-full pl-10 pr-3 py-2 bg-white/40 border border-white/30 rounded-lg text-[15px] text-on-surface placeholder:text-on-surface-variant/70 focus:ring-2 focus:ring-primary-container focus:border-transparent transition-all shadow-inner outline-none" 
-                  id="password" 
-                  name="password" 
-                  placeholder="Password" 
-                  required 
+                <input
+                  autoComplete="current-password"
+                  className="block w-full pl-10 pr-3 py-2 bg-white/40 border border-white/30 rounded-lg text-[15px] text-on-surface placeholder:text-on-surface-variant/70 focus:ring-2 focus:ring-primary-container focus:border-transparent transition-all shadow-inner outline-none"
+                  id="password"
+                  name="password"
+                  placeholder="Password"
+                  required
                   type="password"
                 />
               </div>
@@ -90,10 +90,10 @@ export default function Login() {
 
             <div className="flex items-center justify-between mt-1">
               <div className="flex items-center">
-                <input 
-                  className="h-4 w-4 text-primary-container focus:ring-primary-container border-outline-variant rounded bg-white/50" 
-                  id="remember-me" 
-                  name="remember-me" 
+                <input
+                  className="h-4 w-4 text-primary-container focus:ring-primary-container border-outline-variant rounded bg-white/50"
+                  id="remember-me"
+                  name="remember-me"
                   type="checkbox"
                 />
                 <label className="ml-2 block font-label-sm text-sm text-on-surface-variant" htmlFor="remember-me">
@@ -107,8 +107,8 @@ export default function Login() {
               </div>
             </div>
 
-            <button 
-              className="w-full flex justify-center py-2.5 px-4 border border-transparent rounded-full shadow-sm font-label-md text-[15px] text-white bg-primary-container hover:bg-primary transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-container mt-2" 
+            <button
+              className="w-full flex justify-center py-2.5 px-4 border border-transparent rounded-full shadow-sm font-label-md text-[15px] text-white bg-primary-container hover:bg-primary transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-container mt-2"
               type="submit"
             >
               Sign In
@@ -118,7 +118,7 @@ export default function Login() {
           {/* Footer */}
           <div className="text-center mt-2">
             <p className="font-body-md text-sm text-on-surface-variant">
-              Don't have an account? 
+              Don't have an account?
               <Link className="font-label-md text-[14px] text-primary hover:text-primary-container transition-colors ml-1 border-b border-primary/30 hover:border-primary pb-0.5" href="/register">Create one</Link>
             </p>
           </div>

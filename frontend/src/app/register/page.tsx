@@ -18,7 +18,7 @@ export default function Register() {
           quality={100}
           unoptimized
         />
-        {/* Overlay to ensure text readability and maintain serene aesthetic */}
+        {/* Overlay to ensure text readability and maintain Atlas aesthetic */}
         <div className="absolute inset-0 bg-tertiary-fixed/30 mix-blend-multiply"></div>
         <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/40 to-transparent"></div>
       </div>
@@ -28,7 +28,7 @@ export default function Register() {
       <main className="relative z-10 w-full max-w-[400px] bg-surface/80 backdrop-blur-xl rounded-[24px] border border-white/40 shadow-2xl p-6 sm:p-8 flex flex-col gap-5">
         {/* Header */}
         <div className="text-center space-y-1">
-          <h1 className="font-headline-sm text-headline-sm text-primary">Join Serene AI</h1>
+          <h1 className="font-headline-sm text-headline-sm text-primary">Join Atlas</h1>
           <p className="font-body-md text-sm text-on-surface-variant">Your creative journey begins here.</p>
         </div>
 

@@ -11,7 +11,7 @@ export default function ChatPage() {
             <span className="material-symbols-outlined text-[20px]" style={{ fontVariationSettings: "'FILL' 1" }}>spa</span>
           </div>
           <div>
-            <h1 className="font-headline-sm text-[18px] text-[#1b1c1a] font-medium leading-tight">Serene AI</h1>
+            <h1 className="font-headline-sm text-[18px] text-[#1b1c1a] font-medium leading-tight">Atlas</h1>
             <p className="font-label-sm text-[11px] text-on-surface-variant">Creative Partner</p>
           </div>
         </div>
@@ -66,7 +66,7 @@ export default function ChatPage() {
             <div className="w-8 h-8 rounded-full bg-[#1b1c1a] text-white flex items-center justify-center">
               <span className="material-symbols-outlined text-[18px]" style={{ fontVariationSettings: "'FILL' 1" }}>spa</span>
             </div>
-            <span className="font-headline-sm text-headline-sm text-[#1b1c1a]">Serene AI</span>
+            <span className="font-headline-sm text-headline-sm text-[#1b1c1a]">Atlas</span>
           </div>
           <button className="text-on-surface-variant">
             <span className="material-symbols-outlined">menu</span>

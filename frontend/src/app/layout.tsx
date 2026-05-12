@@ -14,8 +14,8 @@ const newsreader = Newsreader({
 });
 
 export const metadata: Metadata = {
-  title: "Serene AI - Find Your Inner Peace",
-  description: "Reconnect with nature and find inner calm with Serene AI.",
+  title: "Atlas - Find Your Inner Peace",
+  description: "Reconnect with nature and find inner calm with Atlas.",
 };
 
 export default function RootLayout({
