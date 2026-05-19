@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { registerUser, loginUser, getMe, forgotPassword } = require('../controllers/authController');
+const { registerUser, loginUser, getMe, forgotPassword, resetPassword } = require('../controllers/authController');
 const { protect } = require('../middleware/authMiddleware');
 
 /**
@@ -12,6 +12,7 @@ const { protect } = require('../middleware/authMiddleware');
 router.post('/register', registerUser);
 router.post('/login', loginUser);
 router.post('/forgot-password', forgotPassword); // Sends the reset email
+router.put('/reset-password/:resetToken', resetPassword); // Resets password with token
 
 // Private Routes (Only logged-in users with a JWT token)
 router.get('/me', protect, getMe); // Returns current user data

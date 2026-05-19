@@ -1,9 +1,70 @@
+"use client";
+
+import { useState, useEffect, Suspense } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter, useSearchParams } from "next/navigation";
+import toast, { Toaster } from "react-hot-toast";
+import api from "@/lib/axios";
+import { useAuthStore } from "@/store/useAuthStore";
 
-export default function NewPassword() {
+function NewPasswordContent() {
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+  
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const setAuth = useAuthStore((state) => state.setAuth);
+  
+  const token = searchParams.get("token");
+
+  useEffect(() => {
+    if (!token) {
+      toast.error("Invalid reset link");
+      router.push("/reset-password");
+    }
+  }, [token, router]);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (password !== confirmPassword) {
+      toast.error("Passwords do not match");
+      return;
+    }
+
+    if (password.length < 6) {
+      toast.error("Password must be at least 6 characters");
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const res = await api.put(`/auth/reset-password/${token}`, { password });
+      const { user, token: jwtToken } = res.data;
+      
+      setAuth(user, jwtToken);
+      toast.success("Password reset successful! Redirecting...");
+      
+      setTimeout(() => {
+        router.push("/chat");
+      }, 1500);
+    } catch (error: any) {
+      const message = error.response?.data?.message || "Failed to reset password.";
+      toast.error(message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="flex-1 flex flex-col justify-center items-center relative min-h-screen overflow-hidden py-12 md:py-20">
+      <Toaster position="top-center" />
+      
       {/* Cinematic Landscape Background */}
       <div className="absolute inset-0 z-0 overflow-hidden">
         <Image 
@@ -34,7 +95,7 @@ export default function NewPassword() {
             Your new password must be different from previously used passwords.
           </p>
           
-          <form className="space-y-4 text-left">
+          <form onSubmit={handleSubmit} className="space-y-4 text-left">
             {/* New Password Input */}
             <div className="space-y-1">
               <label className="block font-label-md text-label-md text-on-surface" htmlFor="password">New Password</label>
@@ -45,13 +106,21 @@ export default function NewPassword() {
                 <input 
                   className="block w-full pl-10 pr-10 py-3 bg-surface-container-low border border-surface-variant rounded-lg font-body-md text-body-md text-on-surface focus:ring-2 focus:ring-primary-container/30 focus:border-primary-container transition-all shadow-inner placeholder:text-outline outline-none" 
                   id="password" 
-                  name="password" 
+                  name="password"
+                  type={showPassword ? "text" : "password"}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••" 
                   required 
-                  type="password" 
                 />
-                <button className="absolute inset-y-0 right-0 pr-3 flex items-center text-outline hover:text-on-surface transition-colors" type="button">
-                   <span className="material-symbols-outlined text-[20px]">visibility_off</span>
+                <button 
+                  className="absolute inset-y-0 right-0 pr-3 flex items-center text-outline hover:text-on-surface transition-colors" 
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                   <span className="material-symbols-outlined text-[20px]">
+                     {showPassword ? "visibility" : "visibility_off"}
+                   </span>
                 </button>
               </div>
             </div>
@@ -66,13 +135,21 @@ export default function NewPassword() {
                 <input 
                   className="block w-full pl-10 pr-10 py-3 bg-surface-container-low border border-surface-variant rounded-lg font-body-md text-body-md text-on-surface focus:ring-2 focus:ring-primary-container/30 focus:border-primary-container transition-all shadow-inner placeholder:text-outline outline-none" 
                   id="confirmPassword" 
-                  name="confirmPassword" 
+                  name="confirmPassword"
+                  type={showConfirmPassword ? "text" : "password"}
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
                   placeholder="••••••••" 
                   required 
-                  type="password" 
                 />
-                <button className="absolute inset-y-0 right-0 pr-3 flex items-center text-outline hover:text-on-surface transition-colors" type="button">
-                   <span className="material-symbols-outlined text-[20px]">visibility_off</span>
+                <button 
+                  className="absolute inset-y-0 right-0 pr-3 flex items-center text-outline hover:text-on-surface transition-colors" 
+                  type="button"
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                >
+                   <span className="material-symbols-outlined text-[20px]">
+                     {showConfirmPassword ? "visibility" : "visibility_off"}
+                   </span>
                 </button>
               </div>
             </div>
@@ -80,10 +157,11 @@ export default function NewPassword() {
             {/* Submit Button */}
             <div className="pt-2">
               <button 
-                className="w-full flex items-center justify-center py-3 px-4 bg-primary-container text-white rounded-lg font-label-md text-label-md shadow-sm hover:bg-primary-container/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-container transition-all active:scale-[0.98] border-t border-white/10" 
+                disabled={loading}
+                className="w-full flex items-center justify-center py-3 px-4 bg-primary-container text-white rounded-lg font-label-md text-label-md shadow-sm hover:bg-primary-container/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-container transition-all active:scale-[0.98] border-t border-white/10 disabled:opacity-50" 
                 type="submit"
               >
-                Reset Password
+                {loading ? "Resetting..." : "Reset Password"}
               </button>
             </div>
           </form>
@@ -98,5 +176,22 @@ export default function NewPassword() {
         </div>
       </main>
     </div>
+  );
+}
+
+export default function NewPassword() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center bg-[#fbf9f6]">
+        <div className="text-center">
+          <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-[#1b1c1a] flex items-center justify-center">
+            <span className="material-symbols-outlined text-white text-3xl">eco</span>
+          </div>
+          <h2 className="text-xl font-medium text-[#1b1c1a] mb-2">Loading...</h2>
+        </div>
+      </div>
+    }>
+      <NewPasswordContent />
+    </Suspense>
   );
 }

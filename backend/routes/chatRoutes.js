@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { sendMessage, getUserChats, getChatById } = require('../controllers/chatController');
+const { sendMessage, getUserChats, getChatById, deleteChat, renameChat } = require('../controllers/chatController');
 const { protect } = require('../middleware/authMiddleware'); // Import our security guard
 
 /**
@@ -15,6 +15,8 @@ router.route('/')
 
 // Route to get a specific chat by its unique ID
 router.route('/:id')
-  .get(protect, getChatById);    // GET /api/chat/12345 -> Gets all messages for one conversation
+  .get(protect, getChatById)     // GET /api/chat/12345    -> Gets all messages for one conversation
+  .put(protect, renameChat)      // PUT /api/chat/12345     -> Renames a conversation
+  .delete(protect, deleteChat);  // DELETE /api/chat/12345 -> Permanently deletes a conversation
 
 module.exports = router;

@@ -1,9 +1,36 @@
+"use client";
+
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import toast, { Toaster } from "react-hot-toast";
+import api from "@/lib/axios";
 
 export default function ResetPassword() {
+  const [email, setEmail] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [emailSent, setEmailSent] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+
+    try {
+      const res = await api.post("/auth/forgot-password", { email });
+      toast.success("Password reset link sent to your email!");
+      setEmailSent(true);
+    } catch (error: any) {
+      const message = error.response?.data?.message || "Failed to send reset email.";
+      toast.error(message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="flex-1 flex flex-col justify-center items-center relative min-h-screen overflow-hidden py-12 md:py-20">
+      <Toaster position="top-center" />
+      
       {/* Cinematic Landscape Background */}
       <div className="absolute inset-0 z-0 overflow-hidden">
         <Image 
@@ -29,38 +56,59 @@ export default function ResetPassword() {
         </div>
         
         <div className="bg-white/60 backdrop-blur-[20px] border border-white/20 rounded-xl p-8 shadow-[0_10px_40px_-10px_rgba(27,48,34,0.08)] text-center">
-          <h1 className="font-headline-md text-headline-md text-primary mb-3">Reset Password</h1>
-          <p className="font-body-md text-body-md text-on-surface-variant mb-8 px-2">
-            Enter your email address and we'll send you a link to reset your password.
-          </p>
-          
-          <form className="space-y-6 text-left">
-            {/* Email Input */}
-            <div className="space-y-2">
-              <label className="block font-label-md text-label-md text-on-surface" htmlFor="email">Email Address</label>
-              <div className="relative">
-                <span className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <span className="material-symbols-outlined text-outline text-[20px]">mail</span>
-                </span>
-                <input 
-                  className="block w-full pl-10 pr-3 py-3 bg-surface-container-low border border-surface-variant rounded-lg font-body-md text-body-md text-on-surface focus:ring-2 focus:ring-primary-container/30 focus:border-primary-container transition-all shadow-inner placeholder:text-outline outline-none" 
-                  id="email" 
-                  name="email" 
-                  placeholder="name@example.com" 
-                  required 
-                  type="email" 
-                />
+          {!emailSent ? (
+            <>
+              <h1 className="font-headline-md text-headline-md text-primary mb-3">Reset Password</h1>
+              <p className="font-body-md text-body-md text-on-surface-variant mb-8 px-2">
+                Enter your email address and we'll send you a link to reset your password.
+              </p>
+              
+              <form onSubmit={handleSubmit} className="space-y-6 text-left">
+                {/* Email Input */}
+                <div className="space-y-2">
+                  <label className="block font-label-md text-label-md text-on-surface" htmlFor="email">Email Address</label>
+                  <div className="relative">
+                    <span className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                      <span className="material-symbols-outlined text-outline text-[20px]">mail</span>
+                    </span>
+                    <input 
+                      className="block w-full pl-10 pr-3 py-3 bg-surface-container-low border border-surface-variant rounded-lg font-body-md text-body-md text-on-surface focus:ring-2 focus:ring-primary-container/30 focus:border-primary-container transition-all shadow-inner placeholder:text-outline outline-none" 
+                      id="email" 
+                      name="email"
+                      type="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      placeholder="name@example.com" 
+                      required 
+                    />
+                  </div>
+                </div>
+                
+                {/* Submit Button */}
+                <button 
+                  disabled={loading}
+                  className="w-full flex items-center justify-center py-3 px-4 bg-primary-container text-white rounded-lg font-label-md text-label-md shadow-sm hover:bg-primary-container/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-container transition-all active:scale-[0.98] border-t border-white/10 disabled:opacity-50" 
+                  type="submit"
+                >
+                  {loading ? "Sending..." : "Send Reset Link"}
+                </button>
+              </form>
+            </>
+          ) : (
+            <>
+              <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-[#1b1c1a]/5 flex items-center justify-center">
+                <span className="material-symbols-outlined text-[#1b1c1a] text-4xl">mark_email_read</span>
               </div>
-            </div>
-            
-            {/* Submit Button */}
-            <button 
-              className="w-full flex items-center justify-center py-3 px-4 bg-primary-container text-white rounded-lg font-label-md text-label-md shadow-sm hover:bg-primary-container/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-container transition-all active:scale-[0.98] border-t border-white/10" 
-              type="submit"
-            >
-              Send Reset Link
-            </button>
-          </form>
+              <h1 className="font-headline-md text-headline-md text-primary mb-3">Check Your Email</h1>
+              <p className="font-body-md text-body-md text-on-surface-variant mb-8 px-2">
+                We've sent a password reset link to <strong>{email}</strong>. 
+                Please check your inbox and follow the instructions.
+              </p>
+              <p className="text-sm text-on-surface-variant/70 mb-6">
+                The link will expire in 10 minutes.
+              </p>
+            </>
+          )}
           
           {/* Back to Login Link */}
           <div className="mt-8 text-center">

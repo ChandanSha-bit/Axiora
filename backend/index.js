@@ -2,10 +2,12 @@ const express = require('express'); // Import the Express framework
 const dotenv = require('dotenv');   // Import Dotenv for environment variables
 const cors = require('cors');       // Import CORS to allow frontend communication
 const rateLimit = require('express-rate-limit'); // Import the Rate Limiting library
-const connectDB = require('./config/db'); // Import our custom database connection function
 
-// 1. Load environment variables
+// 1. Load environment variables FIRST (before any other imports that need them)
 dotenv.config();
+
+const connectDB = require('./config/db'); // Import our custom database connection function
+const passport = require('./config/passport'); // Import Passport configuration
 
 // 2. Connect to the MongoDB Database
 connectDB();
@@ -13,7 +15,10 @@ connectDB();
 // 3. Initialize the Express application
 const app = express();
 
-// --- 4. SECURITY: RATE LIMITING ---
+// 4. Initialize Passport for OAuth
+app.use(passport.initialize());
+
+// --- 5. SECURITY: RATE LIMITING ---
 // This prevents bots and spammers from costing you money on AI/Images
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes window
@@ -30,11 +35,22 @@ const limiter = rateLimit({
 app.use(limiter);
 
 // 5. Global Middlewares
-app.use(cors());         // Enable CORS for all routes
+// WHY explicit CORS config? → Default cors() can block requests that send custom
+// headers (like Authorization: Bearer ...). We must explicitly whitelist:
+//   - origin: the frontend URL
+//   - methods: all HTTP verbs we use
+//   - allowedHeaders: so the JWT token can pass through
+app.use(cors({
+  origin: process.env.FRONTEND_URL || 'http://localhost:3000',
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true,
+}));
 app.use(express.json()); // Enable JSON body parsing for incoming requests
 
 // 6. Define API Routes
 app.use('/api/auth', require('./routes/authRoutes'));       // Authentication
+app.use('/api/auth', require('./routes/oauthRoutes'));      // OAuth (Google & GitHub)
 app.use('/api/chat', require('./routes/chatRoutes'));       // AI Chat History
 app.use('/api/user', require('./routes/userRoutes'));       // User Profile & Settings
 app.use('/api/payments', require('./routes/paymentRoutes')); // Payments

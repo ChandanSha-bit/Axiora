@@ -40,6 +40,12 @@ const UserSchema = new mongoose.Schema({
     enum: ['active', 'inactive', 'canceled'],
     default: 'inactive',
   },
+  energy: {
+    type: Number,
+    default: 100, // Starts at 100% neural energy
+    min: 0,
+    max: 100,
+  },
   password: {
     type: String,
     required: [true, 'Please add a password'],
